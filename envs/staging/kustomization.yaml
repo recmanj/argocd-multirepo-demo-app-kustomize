@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+configMapGenerator:
+  - name: frontend-env-config
+    literals:
+      - |
+        env-config.js=window._env_ = {
+          BACKEND_URL: "https://api.staging.example.com"
+        };
+patches:
+  - path: versions.yaml
+  - path: backend-deployment-patch.yaml
+  - path: frontend-deployment-patch.yaml
+  - path: ingress-backend-patch.yaml
+    target:
+      kind: Ingress
+      name: demo-backend
+  - path: ingress-frontend-patch.yaml
+    target:
+      kind: Ingress
+      name: demo-frontend

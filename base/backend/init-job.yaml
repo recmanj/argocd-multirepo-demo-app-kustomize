@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: demo-backend-init-db
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: demo-backend
+    spec:
+      serviceAccountName: demo-backend
+      restartPolicy: Never
+      containers:
+        - name: init-db
+          image: postgres:17-alpine
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: demo-pg-app
+                  key: uri
+          command:
+            - psql
+            - -v
+            - ON_ERROR_STOP=1
+            - $(DATABASE_URL)
+            - -c
+            - |
+              INSERT INTO notes (title, content)
+              SELECT title, content FROM (VALUES
+                ('Welcome to the Demo', 'This is a sample note created by the init job. Feel free to edit or delete it.'),
+                ('Weather Forecast Tip', 'ECMWF produces medium-range forecasts up to 15 days ahead using one of the world''s most powerful supercomputers.'),
+                ('Fun Fact: The Butterfly Effect', 'Edward Lorenz discovered that tiny rounding errors in atmospheric models could lead to vastly different forecasts -- coining the term butterfly effect.'),
+                ('Reminder: API Endpoints', 'Try GET /notes to list all notes, POST /notes to create one, and DELETE /notes/{id} to remove one.')
+              ) AS seed(title, content)
+              WHERE NOT EXISTS (SELECT 1 FROM notes);
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

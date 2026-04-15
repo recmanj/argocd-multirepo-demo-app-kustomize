@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-backend
+spec:
+  template:
+    spec:
+      containers:
+      - name: demo-backend
+        image: ghcr.io/recmanj/demo-backend:sha-49e1616
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-frontend
+spec:
+  template:
+    spec:
+      containers:
+      - name: demo-frontend
+        image: ghcr.io/recmanj/demo-frontend:2.0.0
