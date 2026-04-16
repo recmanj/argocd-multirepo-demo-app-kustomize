@@ -6,8 +6,8 @@ spec:
   template:
     spec:
       containers:
-      - name: demo-backend
-        image: ghcr.io/recmanj/demo-backend:sha-49e1616
+        - name: demo-backend
+          image: ghcr.io/recmanj/demo-backend:sha-3a33b42
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -17,5 +17,5 @@ spec:
   template:
     spec:
       containers:
-      - name: demo-frontend
-        image: ghcr.io/recmanj/demo-frontend:2.0.0
+        - name: demo-frontend
+          image: ghcr.io/recmanj/demo-frontend:2.0.0
