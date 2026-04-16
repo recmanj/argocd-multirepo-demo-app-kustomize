@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: demo-backend
-          image: ghcr.io/recmanj/demo-backend:sha-49e1616
+          image: ghcr.io/recmanj/demo-backend:sha-3a33b42
 ---
 apiVersion: apps/v1
 kind: Deployment
