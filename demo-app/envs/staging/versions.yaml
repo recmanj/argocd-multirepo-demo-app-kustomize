@@ -18,4 +18,4 @@ spec:
     spec:
       containers:
         - name: demo-frontend
-          image: ghcr.io/recmanj/demo-frontend:2.0.0
+          image: ghcr.io/recmanj/demo-frontend:sha-b6a3b28
